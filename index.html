@@ -12,7 +12,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
-            transition: background 0.5s ease; /* Thêm hiệu ứng chuyển nền */
+            transition: background 0.5s ease;
         }
 
         .screen {
@@ -22,20 +22,20 @@
         .screen.hidden {
             opacity: 0;
             transform: scale(0.95);
-            pointer-events: none; /* Ngăn tương tác khi ẩn */
-            position: absolute; /* Giữ không gian khi ẩn */
+            pointer-events: none;
+            position: absolute;
         }
 
         .card {
             background-color: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px); /* Hiệu ứng kính mờ */
+            backdrop-filter: blur(10px);
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 2rem; /* Responsive padding */
+            padding: 2rem;
         }
 
         .input-field {
-            border: 2px solid #A78BFA; /* Màu tím nhạt hơn */
+            border: 2px solid #A78BFA;
             border-radius: 8px;
             padding: 0.75rem 1rem;
             transition: all 0.3s ease;
@@ -43,7 +43,7 @@
         }
         .input-field:focus {
             outline: none;
-            border-color: #026178; /* Màu tím đậm hơn */
+            border-color: #026178;
             box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
         }
 
@@ -53,19 +53,19 @@
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-transform: uppercase; /* Chữ hoa cho nút */
-            letter-spacing: 0.5px; /* Giãn cách chữ */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .btn-primary {
-            background-color: #026178; /* Màu tím chính */
+            background-color: #026178;
             color: white;
         }
-        .btn-primary:hover {
-            background-color: #022E39; /* Tím đậm hơn khi hover */
+        .btn-primary:hover:not(:disabled) {
+            background-color: #022E39;
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
-        .btn-primary:active {
+        .btn-primary:active:not(:disabled) {
             transform: translateY(0px);
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -78,54 +78,70 @@
         }
 
         .btn-secondary {
-            background-color: #3B82F6; /* Màu xanh */
+            background-color: #3B82F6;
             color: white;
         }
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
             background-color: #2563EB;
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
         
         .btn-success {
-            background-color: #10B981; /* Màu xanh lá */
+            background-color: #10B981;
             color: white;
         }
-        .btn-success:hover {
+        .btn-success:hover:not(:disabled) {
             background-color: #059669;
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
 
-
         .word-box {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Hiệu ứng nảy hơn */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
-            background-color: #55BECC; /* Màu tím rất nhạt */
-            color: #5B21B6; /* Màu tím đậm cho chữ */
+            background-color: #55BECC;
+            color: #5B21B6;
             border-radius: 8px;
             padding: 0.5rem 1rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             font-weight: 600;
+            min-width: 80px;
+            text-align: center;
+            user-select: none;
         }
-        .word-box:hover {
-            transform: scale(1.1) rotate(2deg); /* Thêm hiệu ứng xoay nhẹ */
-            background-color: #E9D5FF; /* Sáng hơn khi hover */
+        .word-box:hover:not(.used):not(.disabled) {
+            transform: scale(1.1) rotate(2deg);
+            background-color: #E9D5FF;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+        .word-box.used {
+            opacity: 0.4;
+            background-color: #e9d5ff;
+            cursor: not-allowed;
+        }
+        .word-box.disabled {
+            opacity: 0.6;
+            background-color: #e9d5ff;
+            cursor: not-allowed;
+        }
         
-        #userSentence .word-box { /* Kiểu riêng cho từ trong câu */
-            background-color: #C4B5FD; /* Nền khác biệt */
+        #userSentenceContainer .word-box {
+            background-color: #C4B5FD;
+        }
+        #userSentenceContainer .word-box:hover:not(.disabled) {
+            transform: scale(1.05);
+            background-color: #b19ff9;
         }
 
         .correct-answer-area {
-            background-color: rgba(74, 222, 128, 0.1); /* Nền xanh lá nhạt */
-            border: 2px solid #22C55E; /* Viền xanh lá */
+            background-color: rgba(74, 222, 128, 0.1);
+            border: 2px solid #22C55E;
             animation: pulseCorrect 1s ease-in-out;
         }
         .wrong-answer-area {
-            background-color: rgba(239, 68, 68, 0.1); /* Nền đỏ nhạt */
-            border: 2px solid #EF4444; /* Viền đỏ */
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 2px solid #EF4444;
             animation: shakeHorizontal 0.5s cubic-bezier(.36,.07,.19,.97) both;
         }
 
@@ -141,55 +157,59 @@
             20%, 40%, 60%, 80% { transform: translateX(6px); }
         }
         
-        /* Spinner mới */
         .spinner {
             width: 28px;
             height: 28px;
             border-radius: 50%;
             display: inline-block;
-            border-top: 3px solid #fff; /* Màu trắng cho spinner trên nút màu */
+            border-top: 3px solid #fff;
             border-right: 3px solid transparent;
             animation: spin 0.8s linear infinite;
         }
-        #startLoading .spinner { /* Spinner trên nút start màu khác nếu cần */
-             border-top: 3px solid #026178;
+        #startLoading .spinner {
+            border-top: 3px solid #026178;
         }
-
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* Progress Bar */
         #progressBar {
-            background: linear-gradient(90deg, #026178, #A78BFA); /* Gradient cho progress */
+            background: linear-gradient(90deg, #026178, #A78BFA);
             transition: width 0.5s ease-in-out;
             box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
         }
 
-        /* Hint style */
         #hint {
             background-color: rgba(255, 255, 255, 0.1);
             border-left: 4px solid #3B82F6;
-            transition: all 0.3s ease-in-out;
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-        }
-        #hint.visible {
             padding: 0.75rem;
             margin-bottom: 1rem;
-            max-height: 100px; /* Hoặc giá trị đủ lớn */
-            opacity: 1;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            color: #1E3A8A;
         }
 
+        #hintTrigger {
+            font-size: 0.75rem;
+            color: #93C5FD;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            text-align: left;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+        #hintTrigger:hover {
+            color: #3B82F6;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
     <div id="startScreen" class="screen card w-full max-w-md text-center">
         <h1 class="text-4xl font-bold text-blue-700 mb-6">Sentence Puzzle</h1>
-        <p class="text-lg text-gray-700 mb-6">Ready to test your English? <br>Enter your name!</br></p>
+        <p class="text-lg text-gray-700 mb-6">Ready to test your English? <br>Enter your name!</p>
         <input id="playerName" type="text" placeholder="Your Name" class="input-field w-full mb-6">
         <div class="relative">
             <button id="startButton" onclick="startGame()" class="btn btn-primary w-full">
@@ -199,7 +219,7 @@
                 </div>
             </button>
         </div>
-	<h3 class="text-sm font-bold text-blue-700 mt-5">Fast English Ms.Yến</h3>
+        <h3 class="text-sm font-bold text-blue-700 mt-5">Fast English Ms.Yến</h3>
     </div>
 
     <div id="gameScreen" class="screen hidden card w-full max-w-3xl">
@@ -211,21 +231,16 @@
             <div id="progressBar" class="h-5 rounded-full" style="width: 0%"></div>
         </div>
         
-        <div class="flex justify-between items-center mb-4">
-            <button id="hintButton" onclick="toggleHint()" class="btn btn-secondary px-5 py-2 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                </svg>
-                Hint
-            </button>
-            <span id="timer" class="text-lg text-blue-700 font-semibold">Time: 0s</span>
+        <div class="mb-4">
+            <p id="hintTrigger" onclick="showHintText()">Click for a hint</p>
+            <p id="hint" class="hidden"></p>
         </div>
-        <p id="hint" class="text-md text-blue-700 italic"></p>
         
+        <span id="timeout" class="text-lg text-blue-700 font-semibold block text-right mb-4">Time: 0s</span>
         <div id="scrambledWords" class="flex flex-wrap gap-3 mb-6 p-4 bg-blue-50 rounded-lg min-h-[60px] justify-center">
-            </div>
+        </div>
         <div id="userSentenceContainer" class="border-2 border-dashed border-blue-300 rounded-lg p-4 min-h-[70px] mb-6 flex flex-wrap gap-3 items-center justify-center">
-            <span class="placeholder-text text-gray-400 italic">Drag words here or click to add</span>
+            <span class="placeholder-text text-gray-400 italic">Click words to add</span>
         </div>
         
         <div class="flex justify-center items-center gap-4">
@@ -253,11 +268,12 @@
     <script>
         let questions = [];
         let currentQuestion = 0;
-        let userSentenceWords = []; // Đổi tên từ userSentence để rõ ràng hơn là mảng các từ
+        let userSentenceData = [];
         let startTime;
         let gameTimerInterval;
         let playerName = '';
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_N5KynzYf6jj5sgRaTqLi0NU_GVa_QVQ-vI3_grOUDo0bUvqET6W4iPWInQ5TSmpx/exec'; // YOUR WEB APP URL
+        let hintUsedForCurrentQuestion = false;
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw_N5KynzYf6jj5sgRaTqLi0NU_GVa_QVQ-vI3_grOUDo0bUvqET6W4iPWInQ5TSmpx/exec';
 
         const startScreen = document.getElementById('startScreen');
         const gameScreen = document.getElementById('gameScreen');
@@ -273,31 +289,29 @@
         const progressBar = document.getElementById('progressBar');
         const progressText = document.getElementById('progress');
         const hintElement = document.getElementById('hint');
-        const hintButton = document.getElementById('hintButton');
-        const timerDisplay = document.getElementById('timer');
+        const hintTrigger = document.getElementById('hintTrigger');
+        const timerDisplay = document.getElementById('timeout');
         const placeholderText = userSentenceContainer.querySelector('.placeholder-text');
 
         function switchScreen(current, next) {
             current.classList.add('hidden');
-            // Delayนิดหน่อยเพื่อให้ hiệu ứng ẩn hoàn tất trước khi hiện màn hình mới
             setTimeout(() => {
                 next.classList.remove('hidden');
-                next.style.position = 'relative'; // Reset position
-                current.style.position = 'absolute'; // Đảm bảo màn hình cũ không chiếm không gian
-            }, 50); // Thời gian này nên nhỏ hơn transition duration một chút
+                next.style.position = 'relative';
+                current.style.position = 'absolute';
+            }, 50);
         }
-
 
         function showButtonLoading(button, loadingIndicator, show, buttonTextContent = null) {
             const textSpan = button.querySelector('.button-text');
             if (show) {
-                if(textSpan) textSpan.style.opacity = '0';
-                else button.style.color = 'transparent'; // Nếu không có span, ẩn text gốc
+                if (textSpan) textSpan.style.opacity = '0';
+                else button.style.color = 'transparent';
                 loadingIndicator.classList.remove('hidden');
                 button.disabled = true;
             } else {
-                if(textSpan) textSpan.style.opacity = '1';
-                else button.style.color = ''; // Hiện lại text gốc
+                if (textSpan) textSpan.style.opacity = '1';
+                else button.style.color = '';
                 loadingIndicator.classList.add('hidden');
                 button.disabled = false;
             }
@@ -315,28 +329,23 @@
                 questions = data.map(q => {
                     if (!q.sentence || typeof q.sentence !== 'string' || !q.hint) {
                         console.warn('Invalid question format, skipping:', q);
-                        return null; // Bỏ qua câu hỏi không hợp lệ
+                        return null;
                     }
-                    // Loại bỏ các dấu câu cơ bản trước khi tách từ, sau đó thêm lại nếu cần khi so sánh
                     const cleanSentence = q.sentence.replace(/[.,!?]$/, '');
                     return {
                         ...q,
                         words: cleanSentence.split(' ').sort(() => Math.random() - 0.5),
-                        originalSentence: q.sentence // Giữ lại câu gốc để so sánh
+                        originalSentence: q.sentence
                     };
-                }).filter(q => q !== null); // Loại bỏ các câu hỏi null
+                }).filter(q => q !== null);
 
                 if (questions.length === 0) {
-                     throw new Error('All questions were in an invalid format.');
+                    throw new Error('All questions were in an invalid format.');
                 }
-
             } catch (error) {
                 console.error('Error fetching questions:', error);
                 alert(`Failed to load questions: ${error.message}. Please check the connection or contact the administrator.`);
-                showButtonLoading(startButton, startLoading, false);
-                throw error; // Ném lỗi ra ngoài để startGame không tiếp tục
-            } finally {
-                 // Loading sẽ được tắt trong startGame hoặc nếu có lỗi
+                throw error;
             }
         }
 
@@ -349,23 +358,21 @@
             }
             
             try {
-                await fetchQuestions(); // fetchQuestions đã có showLoading riêng
+                await fetchQuestions();
                 switchScreen(startScreen, gameScreen);
                 startTime = new Date();
                 startTimer();
                 currentQuestion = 0;
                 loadQuestion();
             } catch (error) {
-                // Lỗi đã được xử lý trong fetchQuestions, không cần làm gì thêm ở đây
-                // Đảm bảo nút start được kích hoạt lại nếu fetch lỗi
                 showButtonLoading(startButton, startLoading, false);
                 return;
             }
-             showButtonLoading(startButton, startLoading, false); // Tắt loading khi thành công
+            showButtonLoading(startButton, startLoading, false);
         }
-        
+
         function startTimer() {
-            clearInterval(gameTimerInterval); // Xóa interval cũ nếu có
+            clearInterval(gameTimerInterval);
             let seconds = 0;
             timerDisplay.textContent = `Time: ${seconds}s`;
             gameTimerInterval = setInterval(() => {
@@ -378,132 +385,90 @@
             clearInterval(gameTimerInterval);
         }
 
-
-        function toggleHint() {
-            hintElement.classList.toggle('visible');
-            if (hintElement.classList.contains('visible')) {
-                hintElement.textContent = `Hint: ${questions[currentQuestion].hint}`;
-            }
+        function showHintText() {
+            if (hintUsedForCurrentQuestion || questions.length === 0 || !questions[currentQuestion]) return;
+            hintTrigger.classList.add('hidden');
+            hintElement.classList.remove('hidden');
+            hintElement.textContent = `Hint: ${questions[currentQuestion].hint}`;
+            hintUsedForCurrentQuestion = true;
         }
 
         function loadQuestion() {
-            if (currentQuestion >= questions.length) return; // Should not happen if logic is correct
+            if (currentQuestion >= questions.length) return;
 
             const q = questions[currentQuestion];
             progressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
             progressBar.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
             
-            hintElement.classList.remove('visible');
+            hintUsedForCurrentQuestion = false;
+            hintTrigger.classList.remove('hidden');
+            hintElement.classList.add('hidden');
+            hintElement.textContent = '';
+
             scrambledWordsContainer.innerHTML = '';
-            userSentenceContainer.innerHTML = ''; // Xóa các từ cũ
-            placeholderText.classList.remove('hidden'); // Hiện lại placeholder
-            userSentenceWords = [];
+            userSentenceContainer.innerHTML = '';
+            if (placeholderText) placeholderText.classList.remove('hidden');
+            userSentenceData = [];
 
             q.words.forEach((word, index) => {
-                const div = createWordDiv(word, index, true);
+                const wordId = `scrambled-${currentQuestion}-${index}`;
+                const div = document.createElement('div');
+                div.textContent = word;
+                div.className = 'word-box';
+                div.id = wordId;
+                div.dataset.word = word;
+                div.dataset.originalIndex = index;
+                div.onclick = () => handleWordClick(wordId, word, true);
                 scrambledWordsContainer.appendChild(div);
             });
 
             checkButton.classList.remove('hidden');
             nextButton.classList.add('hidden');
             userSentenceContainer.className = 'border-2 border-dashed border-blue-300 rounded-lg p-4 min-h-[70px] mb-6 flex flex-wrap gap-3 items-center justify-center';
-            showButtonLoading(nextButton, nextLoading, false); // Reset next button loading
+            showButtonLoading(nextButton, nextLoading, false);
         }
 
-        function createWordDiv(word, originalIndex, isScrambled) {
-            const div = document.createElement('div');
-            div.textContent = word;
-            div.className = 'word-box';
-            div.dataset.word = word;
-            div.dataset.originalIndex = originalIndex; // Lưu vị trí gốc để trả về đúng chỗ nếu cần thiết
-            div.onclick = () => handleWordClick(word, div, isScrambled);
-            // Thêm thuộc tính draggable cho hiệu ứng kéo thả (sẽ cần thêm logic JS cho drop)
-            div.draggable = true;
-            div.ondragstart = (event) => {
-                event.dataTransfer.setData("text/plain", word);
-                event.dataTransfer.setData("sourceElementId", div.id || `word-${Date.now()}`); // Gán ID tạm nếu chưa có
-                if(!div.id) div.id = `word-${Date.now()}`;
-                event.dataTransfer.effectAllowed = "move";
-            };
-            return div;
-        }
-        
-        // Kích hoạt vùng thả
-        userSentenceContainer.ondragover = (event) => {
-            event.preventDefault(); // Quan trọng: cho phép thả
-            userSentenceContainer.classList.add('bg-blue-100'); // Hiệu ứng khi kéo qua
-        };
-        userSentenceContainer.ondragleave = (event) => {
-             userSentenceContainer.classList.remove('bg-blue-100');
-        };
+        function handleWordClick(originalWordId, wordText, isScrambled) {
+            const originalWordElement = document.getElementById(originalWordId);
+            if (isScrambled) {
+                if (!originalWordElement || originalWordElement.classList.contains('used') || originalWordElement.classList.contains('disabled')) {
+                    return;
+                }
+                originalWordElement.classList.add('used');
+                const userWordId = `user-${originalWordId}-${Date.now()}`;
+                const userWordDiv = document.createElement('div');
+                userWordDiv.textContent = wordText;
+                userWordDiv.className = 'word-box';
+                userWordDiv.id = userWordId;
+                userWordDiv.dataset.originalId = originalWordId;
+                userWordDiv.dataset.word = wordText;
+                userWordDiv.onclick = () => handleWordClick(userWordId, wordText, false);
+                
+                userSentenceContainer.appendChild(userWordDiv);
+                userSentenceData.push({ originalId: originalWordId, text: wordText, userWordId: userWordId });
 
-        userSentenceContainer.ondrop = (event) => {
-            event.preventDefault();
-            userSentenceContainer.classList.remove('bg-blue-100');
-            const word = event.dataTransfer.getData("text/plain");
-            const sourceElementId = event.dataTransfer.getData("sourceElementId");
-            const wordElement = document.getElementById(sourceElementId);
-            
-            if (wordElement && wordElement.parentElement === scrambledWordsContainer) {
-                moveWordToSentence(word, wordElement);
-            }
-        };
-        
-        scrambledWordsContainer.ondragover = (event) => {
-            event.preventDefault();
-            scrambledWordsContainer.classList.add('bg-yellow-50');
-        };
-        scrambledWordsContainer.ondragleave = (event) => {
-            scrambledWordsContainer.classList.remove('bg-yellow-50');
-        };
-        scrambledWordsContainer.ondrop = (event) => {
-            event.preventDefault();
-            scrambledWordsContainer.classList.remove('bg-yellow-50');
-            const word = event.dataTransfer.getData("text/plain");
-            const sourceElementId = event.dataTransfer.getData("sourceElementId");
-            const wordElement = document.getElementById(sourceElementId);
-
-            if (wordElement && wordElement.parentElement === userSentenceContainer) {
-                moveWordToScrambled(word, wordElement);
-            }
-        };
-
-
-        function handleWordClick(word, element, isCurrentlyScrambled) {
-            if (isCurrentlyScrambled) {
-                 moveWordToSentence(word, element);
+                if (placeholderText && !placeholderText.classList.contains('hidden')) {
+                    placeholderText.classList.add('hidden');
+                }
             } else {
-                moveWordToScrambled(word, element);
+                const userWordElement = document.getElementById(originalWordId);
+                if (userWordElement) {
+                    userWordElement.remove();
+                }
+                const originalWordElement = document.getElementById(userSentenceData.find(data => data.userWordId === originalWordId).originalId);
+                if (originalWordElement) {
+                    originalWordElement.classList.remove('used');
+                }
+                userSentenceData = userSentenceData.filter(data => data.userWordId !== originalWordId);
+                if (userSentenceData.length === 0 && placeholderText) {
+                    placeholderText.classList.remove('hidden');
+                }
             }
         }
-        
-        function moveWordToSentence(word, element){
-            userSentenceWords.push(word);
-            userSentenceContainer.appendChild(element);
-            element.onclick = () => handleWordClick(word, element, false); // Cập nhật trạng thái
-            if(placeholderText && !placeholderText.classList.contains('hidden')) {
-                placeholderText.classList.add('hidden');
-            }
-        }
-
-        function moveWordToScrambled(word, element){
-            const index = userSentenceWords.indexOf(word);
-            if (index > -1) userSentenceWords.splice(index, 1);
-            
-            // Sắp xếp lại scrambledWordsContainer để từ được trả về đúng vị trí hoặc cuối cùng
-            // Cách đơn giản là thêm vào cuối
-            scrambledWordsContainer.appendChild(element);
-            element.onclick = () => handleWordClick(word, element, true); // Cập nhật trạng thái
-             if (userSentenceWords.length === 0 && placeholderText) {
-                placeholderText.classList.remove('hidden');
-            }
-        }
-
 
         function checkSentence() {
             const q = questions[currentQuestion];
-            const constructedSentence = userSentenceWords.join(' ');
-            // So sánh không phân biệt chữ hoa/thường và bỏ qua dấu câu ở cuối
+            const constructedSentence = userSentenceData.map(data => data.text).join(' ');
             const isCorrect = constructedSentence.toLowerCase().trim() === q.originalSentence.replace(/[.,!?]$/, '').toLowerCase().trim();
 
             userSentenceContainer.className = `border-2 rounded-lg p-4 min-h-[70px] mb-6 flex flex-wrap gap-3 items-center justify-center ${isCorrect ? 'correct-answer-area' : 'wrong-answer-area'}`;
@@ -512,17 +477,21 @@
                 fireConfetti();
                 checkButton.classList.add('hidden');
                 nextButton.classList.remove('hidden');
-                 // Vô hiệu hóa các word-box sau khi trả lời đúng
-                Array.from(scrambledWordsContainer.children).forEach(child => child.onclick = null);
-                Array.from(userSentenceContainer.children).forEach(child => child.onclick = null);
-
-            } else {
-                 // Có thể thêm âm thanh sai ở đây
+                Array.from(scrambledWordsContainer.children).forEach(child => {
+                    child.classList.add('disabled');
+                    child.onclick = null;
+                });
+                Array.from(userSentenceContainer.children).forEach(child => {
+                    if (child.classList.contains('word-box')) {
+                        child.classList.add('disabled');
+                        child.onclick = null;
+                    }
+                });
             }
         }
-        
+
         function fireConfetti() {
-            var end = Date.now() + (3 * 1000); // Chạy trong 3 giây
+            var end = Date.now() + (3 * 1000);
             var colors = ['#026178', '#EC4899', '#F59E0B', '#10B981'];
 
             function frame() {
@@ -545,42 +514,31 @@
                     requestAnimationFrame(frame);
                 }
             }
-            frame(); // Bắt đầu bắn pháo hoa
+            frame();
         }
-
 
         async function nextQuestion() {
             currentQuestion++;
             if (currentQuestion < questions.length) {
-                showButtonLoading(nextButton, nextLoading, true); // Hiện loading khi chuẩn bị câu mới
-                // Thêm một chút delay để người dùng thấy hiệu ứng loading
+                showButtonLoading(nextButton, nextLoading, true);
                 setTimeout(() => {
                     loadQuestion();
-                    // Loading sẽ được tắt trong loadQuestion() hoặc ở đây nếu loadQuestion không có
-                     showButtonLoading(nextButton, nextLoading, false);
-                }, 300); 
+                    showButtonLoading(nextButton, nextLoading, false);
+                }, 300);
             } else {
                 stopTimer();
                 const timeTaken = Math.round((new Date() - startTime) / 1000);
                 showButtonLoading(nextButton, nextLoading, true, "Finishing...");
                 
                 try {
-                    // Gửi dữ liệu không cần chờ phản hồi hoàn chỉnh với no-cors
-                    // Tuy nhiên, để biết chắc chắn đã gửi, bạn nên dùng một Web App có trả về JSON hợp lệ
-                     await fetch(WEB_APP_URL, {
+                    await fetch(WEB_APP_URL, {
                         method: 'POST',
-                        mode: 'no-cors', //  'no-cors' sẽ không cho bạn biết request thành công hay không từ client side
-                        headers: { 
-                            // 'Content-Type': 'application/json' // Bỏ đi nếu dùng 'no-cors' và Google Script không xử lý preflight
-                        },
-                        body: JSON.stringify({ name: playerName, time: timeTaken }) // Dữ liệu sẽ được gửi dưới dạng chuỗi
+                        mode: 'no-cors',
+                        body: JSON.stringify({ name: playerName, time: timeTaken })
                     });
-                     // Do 'no-cors', chúng ta không thể check response.status ở đây.
-                     // Giả sử nó thành công để tiếp tục flow.
                     console.log('Results submitted (no-cors mode).');
                 } catch (error) {
-                    console.error('Error posting results (this error might not show with no-cors):', error.message);
-                    // Với no-cors, lỗi mạng thực sự mới throw ở đây. Lỗi server (4xx, 5xx) sẽ không throw.
+                    console.error('Error posting results:', error.message);
                     alert(`Failed to save your results due to a network error. Your time was ${timeTaken} seconds.`);
                 } finally {
                     showButtonLoading(nextButton, nextLoading, false);
@@ -593,30 +551,22 @@
             document.getElementById('playerNameDisplay').textContent = `Well done, ${playerName}!`;
             document.getElementById('completionTime').textContent = `You finished in ${timeTaken} seconds!`;
             switchScreen(gameScreen, endScreen);
-            fireConfetti(); // Bắn pháo hoa mừng chiến thắng
+            fireConfetti();
         }
 
         function restartGame() {
             switchScreen(endScreen, startScreen);
             currentQuestion = 0;
-            // questions = []; // Không cần reset questions nếu muốn dùng lại bộ câu hỏi cũ cho lần chơi tiếp theo nhanh hơn
-            playerNameInput.value = ''; // Xóa tên người chơi cũ
-            // Các reset khác nếu cần
+            playerNameInput.value = '';
             progressBar.style.width = '0%';
             progressText.textContent = '';
             timerDisplay.textContent = 'Time: 0s';
             if (placeholderText) placeholderText.classList.remove('hidden');
+            hintUsedForCurrentQuestion = false;
+            hintTrigger.classList.remove('hidden');
+            hintElement.classList.add('hidden');
+            hintElement.textContent = '';
         }
-        
-        // Khởi tạo khi tải trang (có thể không cần fetch ngay nếu muốn đợi người dùng bấm Start)
-        // window.onload = async () => {
-        //     // Có thể preload câu hỏi ở đây nếu muốn
-        //     // try {
-        //     // await fetchQuestions(); // Tuy nhiên, làm vậy sẽ gọi API ngay cả khi người dùng chưa muốn chơi
-        //     // } catch (error) {
-        //     // Lỗi đã được xử lý trong fetchQuestions
-        //     // }
-        // };
     </script>
 </body>
 </html>
