@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentence Puzzle_Level 1</title>
+    <title>English Sentence Puzzle</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/1001/1001259.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
             transition: background 0.5s ease;
@@ -32,17 +32,19 @@
             backdrop-filter: blur(10px);
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
-        .input-field {
+        .input-field, .select-field {
             border: 2px solid #A78BFA;
             border-radius: 8px;
-            padding: 0.75rem 1rem;
+            padding: 0.5rem 0.75rem;
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            width: 100%;
+            font-size: 0.9rem;
         }
-        .input-field:focus {
+        .input-field:focus, .select-field:focus {
             outline: none;
             border-color: #026178;
             box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
@@ -50,12 +52,13 @@
 
         .btn {
             border-radius: 8px;
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-size: 0.9rem;
         }
         .btn-primary {
             background-color: #026178;
@@ -78,16 +81,6 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .btn-secondary {
-            background-color: #3B82F6;
-            color: white;
-        }
-        .btn-secondary:hover:not(:disabled) {
-            background-color: #2563EB;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
-        
         .btn-success {
             background-color: #10B981;
             color: white;
@@ -96,6 +89,34 @@
             background-color: #059669;
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .level-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #1E3A8A;
+            justify-content: center;
+        }
+        .level-info svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        .level-title {
+            background: linear-gradient(45deg, #EC4899, #F59E0B);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            animation: gradientShift 3s ease infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .word-box {
@@ -123,7 +144,7 @@
         }
         .word-box.disabled {
             opacity: 0.6;
-            background-color: #e9d5ff;
+            background-color: #a8b6d3;
             cursor: not-allowed;
         }
         
@@ -159,8 +180,8 @@
         }
         
         .spinner {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: inline-block;
             border-top: 3px solid #fff;
@@ -208,11 +229,19 @@
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
-    <div id="startScreen" class="screen card w-full max-w-md text-center">
-        <h1 class="text-4xl font-bold text-blue-700 mb-6">Sentence Puzzle<br>Level 1</h1>
+    <div id="startScreen" class="screen card w-full bg-gray-50 max-w-sm text-center">
+        <h1 class="text-3xl font-bold text-blue-700 mb-4">Sentence Puzzle</h1>
         <p class="text-lg text-gray-700 mb-6">Ready to test your English? <br>Enter your name!</p>
-        <input id="playerName" type="text" placeholder="Your Name" class="input-field w-full mb-6">
-        <div class="relative">
+        <input id="playerName" type="text" placeholder="Your Name" class="input-field mb-4 text-center text-gray-800 text-lg text-semibold">
+        <select id="levelSelect" class="select-field mb-4 text-center text-gray-700 text-bold w-full" onchange="updateLevelInfo()">
+            <option value="1">Level 1</option>
+            <option value="2">Level 2</option>
+            <option value="3">Level 3</option>
+            <option value="4">Level 4</option>
+            <option value="5">Level 5</option>
+        </select>
+        <div id="levelInfo" class="level-info"></div>
+        <div class="relative mt-4">
             <button id="startButton" onclick="startGame()" class="btn btn-primary w-full">
                 <span class="button-text">Let's Go!</span>
                 <div id="startLoading" class="hidden absolute inset-0 flex items-center justify-center bg-blue-600 bg-opacity-50 rounded-lg">
@@ -220,7 +249,7 @@
                 </div>
             </button>
         </div>
-        <h3 class="text-sm font-bold text-blue-700 mt-5">Fast English Ms.Yến</h3>
+        <h3 class="text-xs font-bold text-blue-700 mt-3">Fast English Ms.Yến</h3>
     </div>
 
     <div id="gameScreen" class="screen hidden card w-full max-w-3xl">
@@ -246,23 +275,15 @@
         
         <div class="flex justify-center items-center gap-4">
             <button id="checkButton" onclick="checkSentence()" class="btn btn-primary">Check Sentence</button>
-            <div class="relative">
-                <button id="nextButton" onclick="nextQuestion()" class="btn btn-success hidden">
-                    <span class="button-text">Next Question</span>
-                    <div id="nextLoading" class="hidden absolute inset-0 flex items-center justify-center bg-green-600 bg-opacity-50 rounded-lg">
-                        <div class="spinner border-top-white"></div>
-                    </div>
-                </button>
-            </div>
         </div>
     </div>
 
-    <div id="endScreen" class="screen hidden card w-full max-w-md text-center">
-        <h2 class="text-4xl font-bold text-blue-700 mb-4">Awesome!</h2>
+    <div id="endScreen" class="screen hidden card w-full max-w-sm text-center">
+        <h2 class="text-3xl font-bold text-blue-700 mb-4">Awesome!</h2>
         <img src="https://img.icons8.com/color/100/000000/trophy.png" alt="Trophy" class="mx-auto mb-4"/>
-        <p id="playerNameDisplay" class="text-2xl text-gray-800 font-semibold mb-2"></p>
-        <p id="completionTime" class="text-xl text-gray-700 mb-6"></p>
-        <p class="text-lg text-gray-600 mb-8">You've mastered all the puzzles!</p>
+        <p id="playerNameDisplay" class="text-xl text-gray-800 font-semibold mb-2"></p>
+        <p id="completionTime" class="text-lg text-gray-700 mb-6"></p>
+        <p class="text-base text-gray-600 mb-6">You've mastered all the puzzles!</p>
         <button onclick="restartGame()" class="btn btn-primary w-full">Play Again</button>
     </div>
 
@@ -273,17 +294,47 @@
         let startTime;
         let gameTimerInterval;
         let playerName = '';
+        let selectedLevel = '1';
         let hintUsedForCurrentQuestion = false;
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxOdtOPzggtZVBIiWLG1-m3Q4RpbzNxWuJrGn5o4l5_VZPMkt9b0TLfCDsOOEucHLyRDQ/exec';
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwS6e2FYlcf8XnrJmOC2ke4pMv85IUxlmzRWGhfmjX8jLeASMrexG5pF0PmgXdK9VXgpg/exec';
+        const BACKGROUND_GRADIENTS = {
+            '1': 'linear-gradient(135deg, #34D399 0%, #10B981 100%)',
+            '2': 'linear-gradient(135deg, #60A5FA 0%, #3B82F6 100%)',
+            '3': 'linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%)',
+            '4': 'linear-gradient(135deg, #A855F7 0%, #7C3AED 100%)',
+            '5': 'linear-gradient(135deg, #EC4899 0%, #C026D3 100%)'
+        };
+        const LEVEL_INFO = {
+            '1': {
+                icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#CD7F32" stroke="#8B5A2B" stroke-width="2"/><circle cx="12" cy="12" r="6" fill="#E8B923"/></svg>`,
+                text: ' Thử thách kỹ năng cơ bản'
+            },
+            '2': {
+                icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#C0C0C0" stroke="#808080" stroke-width="2"/><path d="M12 6L13.5 10.5L18 12L13.5 13.5L12 18L10.5 13.5L6 12L10.5 10.5L12 6Z" fill="#E0E0E0"/></svg>`,
+                text: ' Kỹ năng cơ bản'
+            },
+            '3': {
+                icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill    fill="#D7B427" stroke="#C0B897" stroke-width="2"/><path d="M12 5L14.09 9.26L19 10.27L15.55 13.97L16.18 19L12 16.9L7.82 19L8.45 13.97L5 10.27L9.91 9.26L12 5Z" fill="#FFFF00"/></svg>`,
+                text: ' Cần tư duy nâng cao'
+            },
+            '4': {
+                icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4L15.46 8.36L21 9.27L17.64 13.14L18.36 19L12 16.9L5.64 19L6.36 13.14L3 9.27L8.54 8.36L12 4Z" fill="#00B7EB" stroke="#00688B" stroke-width="2"/><path d="M12 6L14.09 9.26L18 10.27L15.55 13.97L16.18 18L12 16.9L7.82 18L8.45 13.97L6 10.27L9.91 9.26L12 6Z" fill="#87CEEB"/></svg>`,
+                text: ' Cần tư duy nâng cao'
+            },
+            '5': {
+                icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L5 9H7V15H17V9H19L12 3Z" fill="#800080" stroke="#4B0082" stroke-width="2"/><path d="M12 5L7 10H9V14H15V10H17L12 5Z" fill="#FFD700"/></svg>`,
+                text: ' Siêu khó Master'
+            }
+        };
 
         const startScreen = document.getElementById('startScreen');
         const gameScreen = document.getElementById('gameScreen');
         const endScreen = document.getElementById('endScreen');
         const playerNameInput = document.getElementById('playerName');
+        const levelSelect = document.getElementById('levelSelect');
+        const levelInfo = document.getElementById('levelInfo');
         const startButton = document.getElementById('startButton');
         const startLoading = document.getElementById('startLoading');
-        const nextButton = document.getElementById('nextButton');
-        const nextLoading = document.getElementById('nextLoading');
         const checkButton = document.getElementById('checkButton');
         const scrambledWordsContainer = document.getElementById('scrambledWords');
         const userSentenceContainer = document.getElementById('userSentenceContainer');
@@ -318,16 +369,39 @@
             }
         }
 
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function updateLevelInfo() {
+            selectedLevel = levelSelect.value;
+            document.body.style.background = BACKGROUND_GRADIENTS[selectedLevel];
+            levelInfo.innerHTML = `
+                ${LEVEL_INFO[selectedLevel].icon}
+                <span><span class="level-title">Level ${selectedLevel}</span>: ${LEVEL_INFO[selectedLevel].text}</span>
+            `;
+        }
+
         async function fetchQuestions() {
             showButtonLoading(startButton, startLoading, true);
             try {
-                const response = await fetch(WEB_APP_URL);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const response = await fetch(`${WEB_APP_URL}?action=fetchQuestions&level=${selectedLevel}`);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTPS error! Status: ${response.status}, Message: ${errorText || 'Unknown error'}`);
+                }
                 const data = await response.json();
+                if (data.error) {
+                    throw new Error(`Server error: ${data.error}`);
+                }
                 if (!Array.isArray(data) || data.length === 0) {
                     throw new Error('No questions received or data is not an array.');
                 }
-                questions = data.map(q => {
+                questions = shuffleArray(data.map(q => {
                     if (!q.sentence || typeof q.sentence !== 'string' || !q.hint) {
                         console.warn('Invalid question format, skipping:', q);
                         return null;
@@ -338,15 +412,18 @@
                         words: cleanSentence.split(' ').sort(() => Math.random() - 0.5),
                         originalSentence: q.sentence
                     };
-                }).filter(q => q !== null);
+                }).filter(q => q !== null));
 
                 if (questions.length === 0) {
                     throw new Error('All questions were in an invalid format.');
                 }
+                console.log(`Successfully fetched ${questions.length} questions for Level ${selectedLevel}`);
             } catch (error) {
-                console.error('Error fetching questions:', error);
-                alert(`Failed to load questions: ${error.message}. Please check the connection or contact the administrator.`);
+                console.error('Detailed error fetching questions:', error);
+                alert(`Failed to load questions for Level ${selectedLevel}: ${error.message}. Please check the console for details and contact the administrator.`);
                 throw error;
+            } finally {
+                showButtonLoading(startButton, startLoading, false);
             }
         }
 
@@ -398,7 +475,7 @@
             if (currentQuestion >= questions.length) return;
 
             const q = questions[currentQuestion];
-            progressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            progressText.textContent = `Level ${selectedLevel} - Question ${currentQuestion + 1} of ${questions.length}`;
             progressBar.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
             
             hintUsedForCurrentQuestion = false;
@@ -424,9 +501,7 @@
             });
 
             checkButton.classList.remove('hidden');
-            nextButton.classList.add('hidden');
             userSentenceContainer.className = 'border-2 border-dashed border-blue-300 rounded-lg p-4 min-h-[70px] mb-6 flex flex-wrap gap-3 items-center justify-center';
-            showButtonLoading(nextButton, nextLoading, false);
         }
 
         function handleWordClick(originalWordId, wordText, isScrambled) {
@@ -467,7 +542,7 @@
             }
         }
 
-        function checkSentence() {
+        async function checkSentence() {
             const q = questions[currentQuestion];
             const constructedSentence = userSentenceData.map(data => data.text).join(' ');
             const isCorrect = constructedSentence.toLowerCase().trim() === q.originalSentence.replace(/[.,!?]$/, '').toLowerCase().trim();
@@ -476,8 +551,7 @@
             
             if (isCorrect) {
                 fireConfetti();
-                checkButton.classList.add('hidden');
-                nextButton.classList.remove('hidden');
+                checkButton.disabled = true;
                 Array.from(scrambledWordsContainer.children).forEach(child => {
                     child.classList.add('disabled');
                     child.onclick = null;
@@ -488,6 +562,33 @@
                         child.onclick = null;
                     }
                 });
+
+                if (currentQuestion < questions.length - 1) {
+                    setTimeout(() => {
+                        currentQuestion++;
+                        loadQuestion();
+                        checkButton.disabled = false;
+                    }, 1000);
+                } else {
+                    stopTimer();
+                    const timeTaken = Math.round((new Date() - startTime) / 1000);
+                    showButtonLoading(checkButton, checkButton, true, "Finishing...");
+                    
+                    try {
+                    await fetch(WEB_APP_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        body: JSON.stringify({  level: selectedLevel, name: playerName, time: timeTaken })
+                    });
+                    console.log('Results submitted (no-cors mode).');
+                } catch (error) {
+                    console.error('Error posting results:', error.message);
+                    alert(`Failed to save your results due to a network error. Your time was ${timeTaken} seconds.`);
+                } finally {
+                    showButtonLoading(checkButton, checkButton, false);
+                    endGame(timeTaken);
+                }
+                }
             }
         }
 
@@ -518,39 +619,9 @@
             frame();
         }
 
-        async function nextQuestion() {
-            currentQuestion++;
-            if (currentQuestion < questions.length) {
-                showButtonLoading(nextButton, nextLoading, true);
-                setTimeout(() => {
-                    loadQuestion();
-                    showButtonLoading(nextButton, nextLoading, false);
-                }, 300);
-            } else {
-                stopTimer();
-                const timeTaken = Math.round((new Date() - startTime) / 1000);
-                showButtonLoading(nextButton, nextLoading, true, "Finishing...");
-                
-                try {
-                    await fetch(WEB_APP_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        body: JSON.stringify({ name: playerName, time: timeTaken })
-                    });
-                    console.log('Results submitted (no-cors mode).');
-                } catch (error) {
-                    console.error('Error posting results:', error.message);
-                    alert(`Failed to save your results due to a network error. Your time was ${timeTaken} seconds.`);
-                } finally {
-                    showButtonLoading(nextButton, nextLoading, false);
-                    endGame(timeTaken);
-                }
-            }
-        }
-
         function endGame(timeTaken) {
             document.getElementById('playerNameDisplay').textContent = `Well done, ${playerName}!`;
-            document.getElementById('completionTime').textContent = `You finished in ${timeTaken} seconds!`;
+            document.getElementById('completionTime').textContent = `You finished 'Level ${selectedLevel}' in ${timeTaken} seconds!`;
             switchScreen(gameScreen, endScreen);
             fireConfetti();
         }
@@ -559,6 +630,8 @@
             switchScreen(endScreen, startScreen);
             currentQuestion = 0;
             playerNameInput.value = '';
+            levelSelect.value = '1';
+            updateLevelInfo();
             progressBar.style.width = '0%';
             progressText.textContent = '';
             timerDisplay.textContent = 'Time: 0s';
@@ -568,6 +641,9 @@
             hintElement.classList.add('hidden');
             hintElement.textContent = '';
         }
+
+        // Initialize level info
+        updateLevelInfo();
     </script>
 </body>
 </html>
